@@ -65,7 +65,7 @@ pipeline {
             }
             steps {
                 echo 'Modify vars and promote package to QA'
-                bat "serverless deploy --alias QA --region ${env.DEPLOY_REGION} --version ${VERSION}"
+                sh "serverless deploy --alias QA --region ${env.DEPLOY_REGION} --version ${VERSION}"
             }
         }
         stage('Deploy to UAT') {
@@ -79,7 +79,7 @@ pipeline {
             }
             steps {
                 echo 'Modify vars and promote package to UAT'
-                bat "serverless deploy --alias UAT --region ${env.DEPLOY_REGION} --version ${VERSION}"
+                sh "serverless deploy --alias UAT --region ${env.DEPLOY_REGION} --version ${VERSION}"
             }
         }
         stage('Release to Production') {
@@ -93,13 +93,13 @@ pipeline {
             }
             steps {
                 echo 'Modify vars and promote release package'
-                bat "serverless deploy --alias LIVE --region ${env.LIVE_DEPLOY_REGION} --deployBucket ${env.LIVE_DEPLOY_BUCKET} --version ${TAG}"
+                sh "serverless deploy --alias LIVE --region ${env.LIVE_DEPLOY_REGION} --deployBucket ${env.LIVE_DEPLOY_BUCKET} --version ${TAG}"
 
                 script {
 
                     try{
-                        bat "git tag -a ${TAG}_Released ${GIT_COMMIT} -m \"jenkins-release: Jenkins Git plugin tagging with ${TAG}_Released\""
-                        bat "git push \"${REPO_URL}\" master --tags"
+                        sh "git tag -a ${TAG}_Released ${GIT_COMMIT} -m \"jenkins-release: Jenkins Git plugin tagging with ${TAG}_Released\""
+                        sh "git push \"${REPO_URL}\" master --tags"
                     }
                     catch(Exception e){
                         echo "Tagging commit failed. Tag probably already exists."
