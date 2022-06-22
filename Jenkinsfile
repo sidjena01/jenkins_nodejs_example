@@ -108,19 +108,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            publishHTML target: [
-            allowMissing         : true,
-            alwaysLinkToLastBuild: false,
-            keepAll              : true,
-            reportDir            : 'coverage',
-            reportFiles          : 'index.html',
-            reportName           : 'Test Report'
-            ]
-        }
-        failure {
-            slackSend color: 'danger', message: "Build ${currentBuild.currentResult} ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-        }
-    }
-}
+    
