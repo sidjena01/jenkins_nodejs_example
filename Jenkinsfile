@@ -76,30 +76,4 @@ pipeline {
                 sh "serverless deploy --alias UAT --region ${env.DEPLOY_REGION} --version ${VERSION}"
             }
         }
-        stage('Release to Production') {
-            input {
-                message "Release package?"
-                ok "Release"
-                submitter "${env.LIVE_DEPLOY_SUBMITTERS}"
-            }
-            environment {
-                TAG = bat(returnStdout: true, script: '@npm run get-version --silent').trim()
-            }
-            steps {
-                echo 'Modify vars and promote release package'
-                sh "serverless deploy --alias LIVE --region ${env.LIVE_DEPLOY_REGION} --deployBucket ${env.LIVE_DEPLOY_BUCKET} --version ${TAG}"
 
-                script {
-
-                    try{
-                        sh "git tag -a ${TAG}_Released ${GIT_COMMIT} -m \"jenkins-release: Jenkins Git plugin tagging with ${TAG}_Released\""
-                        sh "git push \"${REPO_URL}\" master --tags"
-                    }
-                    catch(Exception e){
-                        echo "Tagging commit failed. Tag probably already exists."
-                    }
-                }
-            }
-        }
-    }
-}
