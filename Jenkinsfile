@@ -76,4 +76,4 @@ pipeline {
                 sh "serverless deploy --alias UAT --region ${env.DEPLOY_REGION} --version ${VERSION}"
             }
         }
-
+    }
