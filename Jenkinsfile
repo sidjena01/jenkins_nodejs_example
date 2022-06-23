@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
 // I am passing env variable here
-        REPO_URL = 'https://github.com/sidjena01/npmbuild.git'
+        REPO_URL = 'https://github.com/sidjena01/jenkins_nodejs_example.git'
+            //'https://github.com/sidjena01/npmbuild.git'
     }
     stages {
         stage('Build') {
@@ -44,8 +45,8 @@ pipeline {
             steps {
                 echo 'Deploy package to Dev'
                // bat "serverless deploy --alias DEV --region ${env.DEPLOY_REGION} --version ${VERSION}"
-              //  sh "serverless deploy -p aws --force -r us-west-2 --aws-profile default --verbose"
-                sh "serverless deploy -p aws --force -r us-west-2"
+               sh "serverless deploy -p aws --force -r us-west-2 --aws-profile default --verbose"
+                
             }
         }
         stage('Deploy to QA') {
