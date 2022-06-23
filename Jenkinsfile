@@ -28,7 +28,7 @@ pipeline {
             steps {
                 sh '''
               //   serverless create --template hello-world
-                 serverless create --template hello-world --path myService
+                 sudo serverless create --template hello-world --path myService
                 '''
             }
             
