@@ -38,9 +38,9 @@ pipeline {
            // }
         // }
         stage('Deploy to Development') {
-            environment {
-                VERSION = bat(returnStdout: true, script: '@npm run get-version --silent').trim()
-            }
+           // environment {
+           //     VERSION = bat(returnStdout: true, script: '@npm run get-version --silent').trim()
+           // }
             steps {
                 echo 'Deploy package to Dev'
                // bat "serverless deploy --alias DEV --region ${env.DEPLOY_REGION} --version ${VERSION}"
