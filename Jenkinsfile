@@ -27,7 +27,8 @@ pipeline {
         stage ('Initialize serverless') {
             steps {
                 sh '''
-                 serverless create --template hello-world
+              //   serverless create --template hello-world
+                 serverless create --template hello-world --path myService
                 '''
             }
             
