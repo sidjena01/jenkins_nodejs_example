@@ -13,7 +13,7 @@ pipeline {
                    sh 'npm install'
 
                 // bat 'npm run build'
-                   sh 'npm run build'
+                  // sh 'npm run build'
             }
         }
         stage('Audit Dependencies'){
@@ -51,7 +51,8 @@ pipeline {
             }
             steps {
                 echo 'Deploy package to Dev'
-                bat "serverless deploy --alias DEV --region ${env.DEPLOY_REGION} --version ${VERSION}"
+               // bat "serverless deploy --alias DEV --region ${env.DEPLOY_REGION} --version ${VERSION}"
+                sh "serverless deploy -p helloworld.zip --force -r us-west-2 --aws-profile default --verbose"
             }
         }
         stage('Deploy to QA') {
@@ -65,7 +66,8 @@ pipeline {
             }
             steps {
                 echo 'Modify vars and promote package to QA'
-                sh "serverless deploy --alias QA --region ${env.DEPLOY_REGION} --version ${VERSION}"
+                //sh "serverless deploy --alias QA --region ${env.DEPLOY_REGION} --version ${VERSION}"
+             //   sh "serverless deploy -p helloworld.zip --force -r us-west-2 --aws-profile default --verbose"
             }
         }
         stage('Deploy to UAT') {
