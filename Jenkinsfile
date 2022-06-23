@@ -45,7 +45,9 @@ pipeline {
             steps {
                 echo 'Deploy package to Dev'
                // bat "serverless deploy --alias DEV --region ${env.DEPLOY_REGION} --version ${VERSION}"
-               sh "serverless deploy -p aws --force -r us-west-2 --aws-profile default --verbose"
+              // sh "serverless deploy -p aws --force -r us-west-2 --aws-profile default --verbose"
+                sh '''
+                serverless deploy '''
                 
             }
         }
