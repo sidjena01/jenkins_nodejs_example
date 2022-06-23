@@ -16,35 +16,27 @@ pipeline {
                   // sh 'npm run build'
             }
         }
-        stage('Audit Dependencies'){
-            steps{
-                dependencyCheckAnalyzer datadir: "${env.DEPENDENCY_DB_PATH}", hintsFile: '', includeCsvReports: false, includeHtmlReports: true, includeJsonReports: false, includeVulnReports: false, isAutoupdateDisabled: false, outdir: '', scanpath: 'node_modules', skipOnScmChange: false, skipOnUpstreamChange: false, suppressionFile: '', zipExtensions: ''
-                dependencyCheckPublisher canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
-                archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.*', onlyIfSuccessful: true
-            }
-        }
-        stage('Sonar Analysis'){
-            input {
-                message "Confirm no new vulnerabilities have been discovered."
-                ok "Confirm"
-            }
-            steps{
-             // sh '''sonarproperties'''
-                echo 'Vulnerability check passed'
-            }
-        }
-        stage('Test') {
+       // stage('Audit Dependencies'){
+         //   steps{
+           //     dependencyCheckAnalyzer datadir: "${env.DEPENDENCY_DB_PATH}", hintsFile: '', includeCsvReports: false, includeHtmlReports: true, includeJsonReports: false, includeVulnReports: false, isAutoupdateDisabled: false, outdir: '', scanpath: 'node_modules', skipOnScmChange: false, skipOnUpstreamChange: false, suppressionFile: '', zipExtensions: ''
+             //   dependencyCheckPublisher canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
+               // archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.*', onlyIfSuccessful: true
+           // }
+        // } 
+        stage ('Initialize serverless') {
             steps {
-                echo 'Run tests and publish results'
-                bat 'npm run test'
+                sh '''
+                 serverless create --template hello-world
+                '''
             }
+            
         }
-        stage('Increment Version') {
-            steps {
-                bat 'npm version patch -m "jenkins-release: Deployed package version %%s" --force'
-                bat "git push \"${REPO_URL}\" master --tags"
-            }
-        }
+        //stage('Increment Version') {
+          //  steps {
+            //    bat 'npm version patch -m "jenkins-release: Deployed package version %%s" --force'
+              //  bat "git push \"${REPO_URL}\" master --tags"
+           // }
+        // }
         stage('Deploy to Development') {
             environment {
                 VERSION = bat(returnStdout: true, script: '@npm run get-version --silent').trim()
